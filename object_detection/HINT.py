@@ -273,6 +273,22 @@ def run(filename):
 		if(labels[i] in food_items):
 			information.append(detected)
 			continue
+
+		if(labels[i] == 'laptop'):
+			model = app.models.get('logo')
+			description = model.predict([class_im])
+			description = description['outputs']
+			description = (description[0]['data'])['regions']
+
+			for item in description:
+				item1 = item['data']['concepts'][0]
+				attr = dict()
+				attr['name'] = str(item1['name'])
+				attr['value'] = item1['value']
+				detected['attr'].append(attr)
+				print(str(item1['name'])+" "+str(item1['value']))
+			# information[str(item['w3c']['name'])] = str(item['value'])
+
 		model = app.models.get('color')
 		description = model.predict([class_im])
 		description = description['outputs']

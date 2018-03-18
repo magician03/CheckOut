@@ -62,7 +62,7 @@
 		<canvas width="100%" height="400px" id="picture" style="top:100px;"></canvas>
 		<h1 class="resl">Scan Result(s):</h1>
 		<div style="border: 3px solid #1A2B3B; overflow: hidden; margin: 15px auto; max-width: 100%;">
-			<iframe id="ifrm" , scrolling, scrollable : none, style="border: 0px none;  height: 1700px; width: 100%; margin: -350px 0px -900px 0px">
+			<iframe id="ifrm" , scrolling, scrollable : none, style="border: 0px none;  height: 1700px; width: 100%; margin: 0px 0px -900px 0px">
 			</iframe>
 		</div>
 		<script type="text/javascript" src="../static/JOB/src/JOB.js"></script>
@@ -78,7 +78,8 @@
 					var tempArray = [];
 					for (var i = 0; i < result.length; i++) {
 						tempArray.push(result[i].Format + " : " + result[i].Value);
-						var srchtm = 'https://www.barcodelookup.com/' + result[i].Value;
+						var srchtm = 'http://www.upcitemdb.com/upc/' + result[i].Value;
+						console.log(srchtm)
 						document.getElementById('ifrm').src = srchtm;
 
 					}

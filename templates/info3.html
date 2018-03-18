@@ -7,10 +7,13 @@
 		<script>
 			function function1() {
 				var selected = "";
+				var x = "";
 				$("#table input[type='checkbox']:checked").each(function() {
 					console.log($(this).attr("id"));
 					selected += ($(this).attr("id") + "%20");
+					x = ($(this).attr("tt"));
 				}).get();
+				selected = x + "%20" + selected;
 				document.getElementById("webaddr").href = "https://amazon.in/s/field-keywords=" + selected;
 			}
 		</script>
@@ -38,17 +41,18 @@
 		<tr>
 			<th> {{ obj.label }} </th>
 			<th> <button class="btn btn-primary" type = "button" name = "find1" onclick="function1()">Find</button></th>
+			<th><a id="webaddr">Amazon Link</a></th>
 		</tr>
 		{% for atr in obj.attr %}
             	<tr>
                		<td >   {{ atr.name }}    </td>
                		<td>   {{ atr.value }}    </td>
-					<td> <input id={{ atr.name }} name={{ atr.name }} class="form-check-input" type= "checkbox">Select</td>
+					<td> <input id={{ atr.name }} name={{ atr.name }} tt={{ obj.label }} class="form-check-input" type= "checkbox">Select</td>
 				</tr>
         {% endfor %}
         {% endfor %}
 		</table>
-		<a id="webaddr">Link</a>  
+		  
 	</div>
       
    </body>
