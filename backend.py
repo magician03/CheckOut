@@ -45,7 +45,7 @@ def waitpage():
 	print('loaded')
 	objects = hnt.run(file_name)
 	print(objects)
-	return render_template("info2.html", objects = objects)
+	return render_template("info3.html", objects = objects)
 
 
 @app.route('/postimage', methods = ['POST'])
