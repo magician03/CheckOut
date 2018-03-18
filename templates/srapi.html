@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  $(document).ready(function(){
+    $.getJSON("http://www.faroo.com/api?q=google&start=1&l=en&src=web&f=json",
+        function(data){
+          $.each(data.results, function(i,item){
+			jQuery('<div/>', {  text: item.title }).appendTo('#results'); 
+          });
+        });
+  });
+  </script>
+
+</head>
+<body>
+  <div id="results" />
+</body>
+</html>

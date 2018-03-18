@@ -1,0 +1,136 @@
+@import url(fonts/code_light/stylesheet.css);
+@import url(fonts/code_bold/stylesheet.css);
+@import url(fonts/roboto/stylesheet.css);
+
+body{
+    font-family: 'Arial';
+    padding: 0;
+    margin: 0;
+}
+
+.pg1{
+    position: absolute;
+    width: 412px;
+    height: 732px;
+    left: 0px;
+    top: 0px;
+    background: url(../res/splash_back.jpg);
+    background-size: cover;
+}
+
+.hd1{
+position: absolute;
+width: 274px;
+height: 62px;
+left: 40px;
+top: 109px;
+
+font-family: "Code-Light";
+color: white;
+font-style: normal;
+font-weight: 300;
+line-height: normal;
+font-size: 64px;
+}
+
+.cdbold{
+    font-family: "Code-Bold";
+    position: absolute;
+width: 274px;
+height: 62px;
+left: 200px;
+top: 0px;
+}
+
+.bbbtn{
+    
+    position: absolute;
+    width: 264px;
+    height: 45px;
+    left: 75px;
+    top: 586px;
+    
+background: #3CD9B6;
+border-radius: 20px;
+font-family:"Roboto Condensed";
+font-style: normal;
+font-weight: normal;
+line-height: normal;
+font-size: 18px;
+color: #FFFFFF;
+text-decoration: none;
+text-align: center;
+vertical-align: middle;
+line-height: 45px;   
+}
+
+
+
+.logo-splash{
+    position: absolute;
+width: 142px;
+height: 142px;
+left: 138px;
+top: 284px;
+
+}
+
+
+
+
+
+
+
+
+.ptrn{
+    
+position: absolute;
+width: 316px;
+height: 311px;
+left: 47px;
+top: 49px;
+
+background: url(../res/pattern_mask.png);
+background-size: cover;
+}
+
+.bkg{
+    position: absolute;
+width: 411px;
+height: 731px;
+left: 0px;
+top: 1px;
+
+background: #1A2B3B;
+border: 2px solid #6D7985;
+box-sizing: border-box;
+}
+
+
+.lgp2{
+    position: absolute;
+width: 112px;
+height: 112px;
+left: 155px;
+top: 146px;
+
+box-shadow: 1px 6px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+.wlcb{
+    position: absolute;
+width: 310px;
+height: 81px;
+left: 56px;
+top: 460px;
+
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue';
+font-style: normal;
+font-weight: normal;
+line-height: normal;
+font-size: 36px;
+text-align: center;
+
+color: #FFFFFF;
+}

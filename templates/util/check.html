@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+   <head>
+        <title>Splash Screen </title>
+        <link rel="stylesheet" type="text/css" href="css/pg2.css">
+      <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+      <link rel = "stylesheet" href = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+      <script src = "https://code.jquery.com/jquery-1.11.3.min.js"></script>
+      <script src = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+   </head>
+
+   <body>
+        <div data-role = "page" id = "page1">
+         
+         <div data-role = "main" class = "ui-content frm">
+                <div class="img-circ"></div>
+                <div class="cld"></div>
+                <div class="title">Know what's lying around the store</div>
+                <div class="desc">We will detect the items across your surroundings for you</div>
+            <div id="navigator">
+                    <a href="#page1" data-transition="slide" class="activeSlide">1</a>
+                    <a href="#page2" data-transition="slide" >2</a>
+                    <a href="#page3" data-transition="slide">3</a>
+                </div>
+         </div>
+        </div>
+
+      <div data-role = "page" id = "page2">
+        <div data-role = "main" class = "ui-content frm">
+                <div class="img-circ2"></div>
+                <div class="title">Scan your favorite products</div>
+                <div class="desc">Point your camera to the product barcode and that’s it</div>
+            <div id="navigator">
+                    <a href="#page1" data-transition="slide" data-direction="reverse">1</a>
+                    <a href="#page2" data-transition="slide" class="activeSlide" >2</a>
+                    <a href="#page3" data-transition="slide">3</a>
+                </div>
+         </div>
+      </div>
+
+      <div data-role = "page" id = "page3">
+            <div data-role = "main" class = "ui-content frm">
+                    <div class="img-circ2"></div>
+                    <div class="title">Compare the prices online</div>
+                    <div class="desc">Search and do comparision of prices across various websites and sellers</div>
+                    <div id="navigator">
+                        <a href="#page1" data-transition="slide"data-direction="reverse" >1</a>
+                        <a href="#page2" data-transition="slide" data-direction="reverse">2</a>
+                        <a href="#page3" data-transition="slide" class="activeSlide">3</a>
+                    </div>
+             </div>
+          </div>
+
+      
+   </body>
+</html>

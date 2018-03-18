@@ -1,0 +1,155 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Scandit Web SDK</title>
+
+    <!--
+        Add the library, as explained on http://docs.scandit.com/stable/web/index.html
+    -->
+    <script src="https://unpkg.com/scandit-sdk"></script>
+    <!-- or -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/scandit-sdk"></script> -->
+    <!-- or -->
+    <!-- <script src="https://unpkg.com/scandit-sdk@1.0.5"></script> -->
+    <!-- or -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/scandit-sdk@1.0.5"></script> -->
+    <!-- or -->
+    <!-- <script src="/node_modules/scandit-sdk/build/browser/index.min.js"></script> -->
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 3vh;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #scandit-barcode-picker {
+            max-height: 70vh;
+        }
+
+        #scandit-barcode-result {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            width: 100%;
+        }
+
+        button,
+        button:active,
+        button[disabled]:hover {
+            --webkit-appearance: none;
+            border: none;
+            border-radius: none;
+            outline: none;
+            font-size: 0.7em;
+            padding: 0.4em 0.6em;
+            margin: 20px;
+            text-transform: uppercase;
+            font-family: 'Open Sans', sans-serif;
+            background: #2ec0cc;
+            color: white;
+        }
+
+        button:hover {
+            background: #30d0d8;
+        }
+
+        button[disabled] {
+            opacity: 0.4;
+        }
+
+        #continue-scanning-button {
+            margin-bottom: 10vh;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Containers for the picker and the results -->
+    <div id="scandit-barcode-picker"></div>
+    <div id="scandit-barcode-result">No codes scanned yet</div>
+    <!-- Button to continue scanning after a barcode was scanned -->
+    <button id="continue-scanning-button" onclick="continueScanning()">Continue Scanning</button>
+
+    <script>
+        // Helper function called when the "Continue Scanning" button is clicked
+        function continueScanning() {
+            if (picker) {
+                continueButton.disabled = true;
+
+                // Resume scanning
+                picker.resumeScanning();
+            }
+        }
+
+        // Configure the library and activate it with a license key
+        const licenseKey = "Ace7/CLPOSKwL4B3nACwF9IgknlWGPYBKGMjdrhipBv9c+iyL2NFyTQVNhiMABWJMHgBaMNIW/nqZaHWMH4FkWATaLLkVnWZmFHwz5Mi7uGSU7LRCzl7mmve3+WbjaajUiLpmuhc9Hvm9k8qRBZLYHYpLkO6oJ+D9j5chd5VYv2McjNQC/KZRBBIFgKAc1OxBR11r0vdmIxQdJl75DD01PJqjAzRqJFZnAIDTXhxr/FqBejKS4AODS7z1lRZXDKbbLT5ewoj0hAD7U4677hQJX88jfZufHyMlPYjR9NH/k9nEYN7+WwChnHbdl6NF/k1GwLR/f2Xa7pRqm9F1lCyQxTiTTFnQWqNffNjTCrC7zyfu8yp58RNK/V41fPtai0FMbos7q+sDSE7nKaVE9uje46q20EvFUdWTJaXdW77aZyPv7SnbIoO44O0ngfvvtahWcUJvyeJCYfnrg42Ja+pqUuO51EhId2JZOSfb5BTdSUWj89WsqUtjRVPXSo7B8VK9nYpxa9zQeeY3gYsSGbvz4YEDgNfpP9gdxfPtM4Dsbbhx6UefIIR9NAjzQM02C3F1YXHjTxwmGfmgeXmxyTY5qk4n2jo7LrqiPi1dGusUXVpohW744i0VIq0rf7HY8eWKjkXxnO26Nc1IsUEb7Yvc8C2hPRuU0OVN0FJ2uQlpH+UvjxG4066s3LGq1CxsTkhN9+34PoaOKN/+8FY0am5QNAINVhoWGLnhvWPSIHhssj4/vTYodea+Rhfk3hA3jN22jCdu6H2NoaJrzCs3Fx70vQHK7x6lRc=";
+
+        // const engineLocation = "build"; // the folder containing the engine
+        // or, if using a CDN,
+        const engineLocation = "https://unpkg.com/scandit-sdk/build"
+
+        ScanditSDK.configure(licenseKey, { engineLocation: engineLocation });
+
+        const scannerContainer = document.getElementById("scandit-barcode-picker");
+        const resultContainer = document.getElementById("scandit-barcode-result");
+        const continueButton = document.getElementById("continue-scanning-button");
+        continueButton.disabled = true;
+        continueButton.hidden = true;
+        let picker;
+
+        // Create & start the picker
+        ScanditSDK.BarcodePicker.create(scannerContainer, {
+                playSoundOnScan: true,
+                vibrateOnScan: true
+            })
+            .then(barcodePicker => {
+                picker = barcodePicker;
+                // Create the settings object to be applied to the scanner
+                const scanSettings = new ScanditSDK.ScanSettings({
+                    enabledSymbologies: ["ean8", "ean13", "upca", "upce", "code128", "code39", "code93",
+                        "itf"
+                    ],
+                    codeDuplicateFilter: 1000
+                });
+                picker.applyScanSettings(scanSettings);
+
+                // If a barcode is scanned, show it to the user and pause scanning
+                // (scanning is resumed when the user clicks "Continue Scanning")
+                picker.onScan(scanResult => {
+                    continueButton.hidden = false;
+                    continueButton.disabled = false;
+                    picker.pauseScanning();
+                    resultContainer.innerHTML = scanResult.barcodes.reduce((string, barcode) =>
+                        string +
+                        `${ScanditSDK.Barcode.Symbology.toHumanizedName(barcode.symbology)}: ${barcode.data}<br>`,
+                        '');
+                });
+                picker.onScanError(error => {
+                    alert(error.message);
+                });
+                picker.resumeScanning();
+            })
+            .catch(error => {
+                alert(error);
+            });
+    </script>
+</body>
+
+</html>

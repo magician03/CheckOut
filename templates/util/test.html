@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+        <head>
+    
+                <meta charset="utf-8">
+                <meta name = "viewport" content = "width = device-width, initial-scale = 1"> 
+                <link rel = "stylesheet" href = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+                <script src = "https://code.jquery.com/jquery-1.11.3.min.js"></script>
+                <script type="text/javascript" src="https://sdk.clarifai.com/js/clarifai-latest.js"></script>
+                <script src = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+            
+                <title>Capture image</title>
+            </head>
+            <body>
+                <h2>OUTPUT :<span id="outp"></span></h2>
+                <script typ="text/javascript">
+                 const app = new Clarifai.App({apiKey: 'bb5f7ed42b944db7b8cdf566b13c67a6'});
+            
+                app.models.predict(Clarifai.GENERAL_MODEL,'https://samples.clarifai.com/metro-north.jpg').then(
+                function(response) {
+                    if(response.rawData.outputs[0].data.hasOwnProperty("concepts")) {
+                        tagArray = response.rawData.outputs[0].data.concepts;
+                        for (var other = 0; other < tagArray.length; other++) {
+                        console.log(tagArray[other]); 
+                        conceptNames += '<li>' + tagArray[other].name + ': <i>' + tagArray[other].value + '</i></li>';
+                        }}
+                        
+                },
+                function(err) {
+                    alert(err);
+                }   
+                );
+
+                </script>
+
+            </body>
+</html>

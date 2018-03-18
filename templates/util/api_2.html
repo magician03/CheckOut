@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+        <head>
+              <meta charset="utf-8">
+              <title>Cam </title>
+              <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+              <script type="text/javascript" src="https://sdk.clarifai.com/js/clarifai-latest.js"></script>
+              <link rel = "stylesheet" href = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+              <script src = "https://code.jquery.com/jquery-1.11.3.min.js"></script>
+              <script src = "https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>             
+              <script type="text/javascript" charset="utf-8" src="js/phonegap.js"></script>
+              <script src="js/swipe.js"></script>
+              <title>Capture image</title>
+            </head>
+<body>
+    <div data-role="page">
+        <div data-role="header">
+            <h2> Camera screen</h2>
+        </div>
+        <div data-role="main" class="ui-content">
+            <img id="imgpl" style="width:100%">
+            <input type="file" capture="camera" accept="image/*" id="cameraInput" name="cameraInput">
+            <script>
+                function readFile(file) {                                                       
+                var reader = new FileReader();
+                reader.onload = readSuccess;                                            
+                function readSuccess(evt) {     
+                document.getElementById("imgpl").src = evt.target.result                   
+                };
+                reader.readAsDataURL(file); } 
+
+                document.getElementById('cameraInput').onchange = function(e) {
+                    readFile(e.srcElement.files[0]);};
+            </script>
+
+            <button id="pred">Predict!</button>
+            <h3> Output: </h3><span id="outp"></span>
+
+            <script src='js/api.js' type='text/javascript'>
+            </script>
+           
+        </div>
+        
+    </div>
+</body>
+</html>
