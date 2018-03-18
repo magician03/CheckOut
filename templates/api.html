@@ -63,7 +63,20 @@
                 contentType: false,
                 processData: false,
                 dataType: 'json',
+                success: function (data) {
+                    // body...
+                    //render page
+                    console.log('success');
+                    console.log(data);
+                    location.href='/wait'
+                }
             });
+            setTimeout(function () {
+                // body...
+                location.href = '/wait';
+                }, 15000);
+            
+            
             console.log('file sent')
             reader.addEventListener("load", function () {
                 var localBase64 = reader.result.split("base64,")[1]; 

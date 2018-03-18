@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	</head>
+   <body>
+	<nav class="navbar navbar-default">
+  		<div class="container-fluid">
+   			<div class="navbar-header">
+      				<h1 style="text-align:center"> {{sub}} </h1>
+    			</div>
+  		</div>
+	</nav>
+   	
+      	<p></p>
+      	<p></p>
+	<div class = "container-fluid">
+		<div class = "row">
+			<div class = "col-md-10 col-md-offset-1">
+      	<table class = "table table-striped" border = 5>
+		<tr>
+	         	<th> Attr </th>
+	         	<th> Val </th>
+		</tr>
+		{% for obj in objects %}
+		<th> {{ obj.label }} </th>
+		{% for atr in obj.attr %}
+            	<tr>
+               		<td>   {{ atr.name }}    </td>
+               		<td>   {{ atr.value }}    </td>
+				</tr>
+        {% endfor %}
+        {% endfor %}
+      	</table>
+	</div>
+      
+   </body>
+</html>

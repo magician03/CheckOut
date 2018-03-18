@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<html lang="en">
+
+<head>
+    <script>
+        function srch(){
+
+        var srchtm = 'https://www.barcodelookup.com/';
+        document.getElementById('ifrm').src=srchtm;
+        var objects = JSON.parse('{{ objects | tojson | safe }}');
+        console.log(objects);
+        tagArray = objects.attr;
+                        conceptNames='';
+                        for (var other = 0; other < tagArray.length; other++) {
+                        console.log(tagArray[other]); 
+                        conceptNames += '%20' + tagArray[other].name ;
+                        }
+                        srchtm+=conceptNames;
+
+                        document.getElementById('ifrm').src=conceptNames;
+                        document.getElementById('prt').innerHTML=conceptNames;
+
+                        }
+        </script>
+	<title>Splash Screen </title>
+	<meta name="viewport" content="width = device-width, initial-scale = 1">
+	<link rel="stylesheet" type="text/css" href="../static/css/pg3.css">
+</head>
+
+<body>  <br><br><br><br>
+        <div id="prt"></div>
+        <div style="top:300px; width:80%; align-text:center;" >
+                <h1>Keywords found:</h1>
+                <p id="puth">Tags: </p>
+
+                </div>
+	<div class="app-head"></div>
+	<img src="../static/res/logo.png" class="top-logo">
+	<div class="lgtxt">CHECK
+		<span class="cdbold">OUT</span>
+    </div>
+    
+   
+    <div style=" position:absolute; top:150px; left:65px;">
+    <button type="input" onclick="srch()" id="bnn" style="height:30px;">Search !</button>
+    	<h1 class="resl">Scan Result(s):</h1>
+    </div>
+		
+	
+		<div style=" position:absolute; top:250px; border: 3px solid #1A2B3B; overflow: hidden; margin: 15px auto; width: 97%;">
+			<iframe id="ifrm" , scrolling, scrollable : none, style="border: 0px none;  height: 1700px; width: 100%; margin: -350px 0px -900px 0px">
+			</iframe>
+		</div>
+		
+
+</body>
+
+</html>

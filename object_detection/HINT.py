@@ -21,7 +21,7 @@ from io import StringIO
 from matplotlib import pyplot as plt
 from PIL import Image
 import cv2
-os.chdir('object_detection')
+# os.chdir('object_detection')
 # import clarifai
 from clarifai.rest import ClarifaiApp
 from clarifai.rest import Image as ClImage
@@ -71,14 +71,14 @@ from utils import visualization_utils as vis_util
 
 # What model to download.
 MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
-MODEL_FILE = MODEL_NAME + '.tar.gz'
+MODEL_FILE =  './object_detection/' + MODEL_NAME + '.tar.gz'
 DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
-PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+PATH_TO_CKPT = './object_detection/' + MODEL_NAME + '/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
+PATH_TO_LABELS = os.path.join('./object_detection/data', 'mscoco_label_map.pbtxt')
 
 NUM_CLASSES = 90
 
@@ -108,7 +108,7 @@ with detection_graph.as_default():
 		od_graph_def.ParseFromString(serialized_graph)
 		tf.import_graph_def(od_graph_def, name='')
 
-
+print("loaded model")
 # ## Loading label map
 # Label maps map indices to category names, so that when our convolution network predicts `5`, we know that this corresponds to `airplane`.  Here we use internal utility functions, but anything that returns a dictionary mapping integers to appropriate string labels would be fine
 
@@ -200,17 +200,19 @@ def run_inference_for_single_image(image, graph):
 
 refsize = 500
 apparel = ['person']
-food_items = ['wine glass','sandwich','broccoli','banana','apple','orange','carrot','pizza','cake','donut','hotdog','bottle','cup']
-for item in os.listdir('../Objects'):
-	path = os.path.join('../Objects', item)
+food_items = ['wine glass','sandwich','broccoli','banana','apple','orange','carrot','pizza','cake','donut','hotdog','cup']
+print(os.getcwd())
+for item in os.listdir('Objects'):
+	path = os.path.join('Objects', item)
 	os.remove(path)
-def run():
+def run(filename):
 	# image = Image.open(image_path)
 	# the array based representation of the image will be used later in order to prepare the
 	# result image with boxes and labels on it.
 	# image_np = load_image_into_numpy_array("/home/raghav/Desktop/download.jpeg")
 	# Expand dimensions since the model expects images to have shape: [1, None, None, 3]
-	image_np = cv2.imread("../Images/pizza-1.jpg")
+	information = []
+	image_np = cv2.imread(filename)
 	# image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
 	refsize = min(image_np.shape[0], 500)
 	image_np = cv2.resize(image_np, (image_np.shape[1]*refsize/image_np.shape[0],refsize))
@@ -239,11 +241,14 @@ def run():
 		xmax1 = int(coordinates[i][3] * shape[1])
 		# print(ymin1,ymax1,xmin1,xmax1)
 		class_im = im_objs[ymin1-2:ymax1+3,xmin1-2:xmax1+3,:]
-		cv2.imwrite("../Objects/"+labels[i]+str(i)+".png",class_im)
-		cv2.imwrite("../temp.png", class_im)
-		class_im = ClImage(file_obj=open("../temp.png","rb"))
+		cv2.imwrite("Objects/"+labels[i]+str(i)+".png",class_im)
+		cv2.imwrite("temp.png", class_im)
+		class_im = ClImage(file_obj=open("temp.png","rb"))
 		classifier = 'general-v1.3'
 		lim = 3
+		detected = dict()
+		detected['label'] = labels[i]
+		detected['attr'] = []
 		if(labels[i] in food_items):
 			classifier = 'food-items-v1.0'
 		elif(labels[i] in apparel):
@@ -256,13 +261,17 @@ def run():
 		print('')
 		print("OBJECT "+labels[i])
 		print("")
-		information = dict()
 		if labels[i] == 'sandwich' or labels[i] == 'burger':
 			lim = 8
 		for item in description[:lim]:
+			attr = dict()
+			attr['name'] = str(item['name'])
+			attr['value'] = item['value']
+			detected['attr'].append(attr)
 			print(str(item['name'])+" "+str(item['value']))
-			information[str(item['name'])] = str(item['value'])
+			# information[str(item['name'])] = str(item['value'])
 		if(labels[i] in food_items):
+			information.append(detected)
 			continue
 		model = app.models.get('color')
 		description = model.predict([class_im])
@@ -270,12 +279,17 @@ def run():
 		description = (description[0]['data'])['colors']
 
 		for item in description:
+			attr = dict()
+			attr['name'] = str(item['w3c']['name'])
+			attr['value'] = item['value']
+			detected['attr'].append(attr)
 			print(str(item['w3c']['name'])+" "+str(item['value']))
-			information[str(item['w3c']['name'])] = str(item['value'])
-
+			# information[str(item['w3c']['name'])] = str(item['value'])
+		information.append(detected)	
 	# plt.figure(figsize=IMAGE_SIZE)
 	# plt.imshow(image_np)
 	# plt.show()
+	# os.chdir('../')
 	return information
 
 

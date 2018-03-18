@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script>
+			function function1() {
+				var selected = "";
+				$("#table input[type='checkbox']:checked").each(function() {
+					console.log($(this).attr("Attr"));
+					selected += ($(this).attr("Attr") + "%20");
+				}).get();
+				document.getElementById("webaddr").setAttribute("href") = "https://amazon.in/s/field-keywords=" + selected;
+			}
+		</script>
+	</head>
+   <body>
+	<nav class="navbar navbar-default">
+  		<div class="container-fluid">
+   			<div class="navbar-header">
+      				<h1 style="text-align:center"> {{sub}} </h1>
+    			</div>
+  		</div>
+	</nav>
+   	
+      	<p></p>
+      	<p></p>
+	<div class = "container-fluid">
+		<div class = "row">
+			<div class = "col-md-10 col-md-offset-1">
+      	<table id = "table" class = "table table-striped" border = 5>
+		<tr>
+	         	<th> Attr </th>
+	         	<th> Val </th>
+		</tr>
+		{% for obj in objects %}
+		<tr>
+			<th> {{ obj.label }} </th>
+			<th> <input type = "button" name = "find1" onclick="function1()"> </th>
+		</tr>
+		{% for atr in obj.attr %}
+            	<tr>
+               		<td>   {{ atr.name }}    </td>
+               		<td>   {{ atr.value }}    </td>
+					<td> <input type= "checkbox">Select</td>
+				</tr>
+        {% endfor %}
+        {% endfor %}
+		</table>
+		<a id="webaddr">Link</a>  
+	</div>
+      
+   </body>
+</html>
