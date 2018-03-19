@@ -244,8 +244,11 @@ def run(filename):
 		cv2.imwrite("Objects/"+labels[i]+str(i)+".png",class_im)
 		cv2.imwrite("temp.png", class_im)
 		class_im = ClImage(file_obj=open("temp.png","rb"))
-		classifier = 'general-v1.3'
+		classifier = -1#'general-v1.3'
 		lim = 3
+		print('')
+		print("OBJECT "+labels[i])
+		print("")
 		detected = dict()
 		detected['label'] = labels[i]
 		detected['attr'] = []
@@ -254,39 +257,42 @@ def run(filename):
 		elif(labels[i] in apparel):
 			classifier = 'apparel'
 			lim = 3
-		model = app.models.get(classifier)
-		description = model.predict([class_im])
-		description = description['outputs']
-		description = (description[0]['data'])['concepts']
-		print('')
-		print("OBJECT "+labels[i])
-		print("")
-		if labels[i] == 'sandwich' or labels[i] == 'burger':
-			lim = 8
-		for item in description[:lim]:
-			attr = dict()
-			attr['name'] = str(item['name'])
-			attr['value'] = item['value']
-			detected['attr'].append(attr)
-			print(str(item['name'])+" "+str(item['value']))
-			# information[str(item['name'])] = str(item['value'])
+		if classifier != -1:
+			model = app.models.get(classifier)
+			description = model.predict([class_im])
+			description = description['outputs']
+			description = (description[0]['data'])['concepts']
+		
+
+			if labels[i] == 'sandwich' or labels[i] == 'burger':
+				lim = 8
+			for item in description[:lim]:
+				attr = dict()
+				attr['name'] = str(item['name'])
+				attr['value'] = item['value']
+				detected['attr'].append(attr)
+				print(str(item['name'])+" "+str(item['value']))
+				# information[str(item['name'])] = str(item['value'])
 		if(labels[i] in food_items):
 			information.append(detected)
 			continue
 
-		if(labels[i] == 'laptop'):
+		if(labels[i] == 'laptop' or labels[i] == 'bottle'):
 			model = app.models.get('logo')
 			description = model.predict([class_im])
 			description = description['outputs']
-			description = (description[0]['data'])['regions']
-
-			for item in description:
-				item1 = item['data']['concepts'][0]
-				attr = dict()
-				attr['name'] = str(item1['name'])
-				attr['value'] = item1['value']
-				detected['attr'].append(attr)
-				print(str(item1['name'])+" "+str(item1['value']))
+			try:
+				description = (description[0]['data'])['regions']
+				for item in description:
+					item1 = item['data']['concepts'][0]
+					attr = dict()
+					attr['name'] = str(item1['name'])
+					attr['value'] = item1['value']
+					detected['attr'].append(attr)
+					print(str(item1['name'])+" "+str(item1['value']))
+			except:
+				print("No logo found")
+			
 			# information[str(item['w3c']['name'])] = str(item['value'])
 
 		model = app.models.get('color')
@@ -296,10 +302,17 @@ def run(filename):
 
 		for item in description:
 			attr = dict()
-			attr['name'] = str(item['w3c']['name'])
+			colour_name = item['w3c']['name']
+			ans = ""
+			for i in range(len(colour_name)-1,-1,-1):
+				ans = colour_name[i] + ans
+				if(colour_name[i].isupper()):
+					break
+				
+			attr['name'] = ans
 			attr['value'] = item['value']
 			detected['attr'].append(attr)
-			print(str(item['w3c']['name'])+" "+str(item['value']))
+			print(ans+" "+str(item['value']))
 			# information[str(item['w3c']['name'])] = str(item['value'])
 		information.append(detected)	
 	# plt.figure(figsize=IMAGE_SIZE)

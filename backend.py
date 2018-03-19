@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import os
 # import cv2
+from object_detection import HINT as hnt
 
 app = Flask(__name__,template_folder='templates')
 
@@ -40,7 +41,7 @@ def get_javascript_data(imageData):
 @app.route('/wait')
 def waitpage():
 	# render_template('wait.html')
-	from object_detection import HINT as hnt
+	
 	file_name = 'data.jpg'
 	print('loaded')
 	objects = hnt.run(file_name)
@@ -57,6 +58,7 @@ def get_post_javascript_data():
 	# cv2.imwrite("data.png",file)
 	with open('data.jpg',"wb+") as f:
 		f.write(file)
+	return render_template('/wait.html')
 	#if file:
 	#	file.save(os.path.join(os.getcwd(), 'data.png'))
 	#imageData = request.files['cameraInput']
